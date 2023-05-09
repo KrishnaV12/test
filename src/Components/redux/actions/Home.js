@@ -14,7 +14,6 @@ export function getUsersRequest() {
 }
 
 export function getUsersSuccess(payload) {
-    console.log("test", payload)
     return {
         type: GET_USER_SUCCESS,
         status: SUCCESS,
@@ -23,7 +22,6 @@ export function getUsersSuccess(payload) {
 }
 
 export function getUsersFailure(error) {
-    console.log("test2", error)
     return {
         type: GET_USER_FAILURE,
         status: ERROR,
@@ -38,11 +36,12 @@ export const getUsers = () => {
         const url = `users?page=1`;
         const result = await getData(url);
         const res = await result.data;
+        console.log("API CHECK1", res);
         if (res.error) {
           throw new Error(res.message);
         }
-        if (res.status === 200) {
-          return dispatch(getUsersSuccess(res.result));
+        if (res.data.length > 0) {
+          return dispatch(getUsersSuccess(res.data));
         } else {
           return dispatch(getUsersFailure(res.message));
         }
